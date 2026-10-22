@@ -1,0 +1,31 @@
+{
+  "name": "Vimbra",
+  "vendor": "Vimbra",
+  "appId": "dev.vimbra.browser",
+  "binaryName": "vimbra",
+  "version": {
+    "product": "firefox",
+    "version": "158.0.1"
+  },
+  "buildOptions": {
+    "windowsUseSymbolicLinks": true
+  },
+  "addons": {},
+  "brands": {
+    "vimbra": {
+      "backgroundColor": "#1E1E2E",
+      "brandShorterName": "Vimbra",
+      "brandShortName": "Vimbra",
+      "brandFullName": "Vimbra",
+      "release": {
+        "displayVersion": "0.1.0"
+      }
+    }
+  },
+  "license": {
+    "ignoredFiles": [
+      ".*\\.json"
+    ],
+    "licenseType": "MPL-2.0"
+  }
+}

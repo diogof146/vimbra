@@ -1,0 +1,5 @@
+# Vimbra — Linux additions (appended after configs/common/mozconfig).
+# Dev build; see configs/macos/mozconfig for the rationale.
+ac_add_options --enable-optimize
+ac_add_options --disable-debug
+ac_add_options --enable-hardening

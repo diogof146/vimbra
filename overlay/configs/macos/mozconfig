@@ -1,0 +1,10 @@
+# Vimbra — macOS additions (appended after configs/common/mozconfig).
+#
+# Deliberately a *dev* build: optimised (so it is usable) but without
+# --enable-release (no LTO/PGO-style extras, much faster to compile).
+# Switch to a release config in the shipping phase, not now.
+ac_add_options --enable-optimize
+ac_add_options --disable-debug
+ac_add_options --enable-hardening
+
+# sccache / -j tuning intentionally left out until we have a baseline build.

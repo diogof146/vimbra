@@ -1,0 +1,24 @@
+# Vimbra — mozconfig shared by every OS. Surfer substitutes ${binName}, ${name},
+# ${appId}, ${changeset} from surfer.json, then appends configs/<os>/mozconfig.
+#
+# Milestone 1 goal: a VANILLA Firefox that builds and launches. Keep this file
+# boring. Hardening/optimisation flags come later, one at a time, each justified.
+
+ac_add_options --with-app-name=${binName}
+export MOZ_USER_DIR="${name}"
+export MOZ_APP_BASENAME=${binName}
+export MOZ_DISTRIBUTION_ID=${appId}
+
+export MOZ_SOURCE_REPO=https://github.com/diogof146/vimbra
+export MOZ_SOURCE_CHANGESET=${changeset}
+
+# Let the build fetch its own pinned toolchains (clang, rust, nasm, ...).
+ac_add_options --enable-bootstrap
+
+# Build the desktop browser only.
+ac_add_options --enable-application=browser
+
+# Telemetry: upload (MOZ_TELEMETRY_REPORTING) is already off because Firefox only
+# enables it for official Mozilla builds. MOZ_DATA_REPORTING is still 1 because the
+# crash reporter / Normandy are compiled in — turning those off is hardening work
+# for later, not part of the vanilla milestone.

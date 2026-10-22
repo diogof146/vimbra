@@ -1,0 +1,7 @@
+# Vimbra — Windows additions (appended after configs/common/mozconfig).
+# Dev build; see configs/macos/mozconfig for the rationale.
+# NOTE: Windows is untested so far. No --target: a native build defaults to the
+# host. (Surfer's template had --target=x86_64-pc-mingw32, which Firefox 158's
+# configure rejects as "no longer supported".)
+ac_add_options --enable-optimize
+ac_add_options --disable-debug

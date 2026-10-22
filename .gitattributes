@@ -1,0 +1,7 @@
+# LF everywhere: Git for Windows would otherwise check out CRLF, which breaks
+# shell scripts, mozconfigs and patches.
+* text=auto eol=lf
+
+*.png binary
+*.ico binary
+*.icns binary

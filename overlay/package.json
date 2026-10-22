@@ -1,0 +1,25 @@
+{
+  "name": "vimbra-overlay",
+  "private": true,
+  "description": "Vimbra's Firefox overlay: pinned Firefox + our src/ files and patches, driven by Surfer.",
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "scripts": {
+    "deps": "npm ci --ignore-scripts && npm rebuild sharp",
+    "download": "surfer download",
+    "bootstrap": "surfer bootstrap",
+    "import": "surfer import",
+    "export": "surfer export",
+    "status": "surfer status",
+    "brand": "surfer set brand vimbra",
+    "build": "npm run brand && surfer build",
+    "build:ui": "npm run brand && surfer build --ui",
+    "update": "surfer update",
+    "start": "surfer run",
+    "reset": "surfer reset"
+  },
+  "devDependencies": {
+    "@zen-browser/surfer": "1.14.9"
+  }
+}

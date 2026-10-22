@@ -1,0 +1,17 @@
+# Firefox source is a build INPUT (pinned in overlay/surfer.json), never committed.
+overlay/engine/
+overlay/.surfer/
+overlay/dist/
+overlay/node_modules/
+# Local-only mozconfig overrides (Surfer merges overlay/mozconfig if present)
+overlay/mozconfig
+# Generated from logo-mac.png by Surfer on macOS
+overlay/configs/branding/*/firefox.icns
+
+# Rust
+target/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
