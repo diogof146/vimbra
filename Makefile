@@ -9,7 +9,7 @@ ifneq ($(NODE22),)
 export PATH := $(NODE22):$(PATH)
 endif
 
-.PHONY: help doctor deps download bootstrap import status build build-ui update run
+.PHONY: help doctor deps download bootstrap import status build build-ui update run test keybindings
 
 help:
 	@echo "make doctor     check this machine can build Vimbra"
@@ -22,6 +22,8 @@ help:
 	@echo "make build-ui   rebuild front-end (JS/CSS/XHTML) changes only"
 	@echo "make update     move engine/ to the latest Firefox release"
 	@echo "make run        launch the built browser"
+	@echo "make test       run Vimbra's browser tests (headless)"
+	@echo "make keybindings  regenerate docs/KEYBINDINGS.md"
 
 doctor:
 	@./build/doctor.sh
@@ -52,3 +54,9 @@ update:
 
 run:
 	$(NPM) start
+
+test:
+	$(NPM) test
+
+keybindings:
+	$(NPM) keybindings

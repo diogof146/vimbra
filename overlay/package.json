@@ -16,7 +16,9 @@
     "build": "npm run brand && surfer build",
     "build:ui": "npm run brand && surfer build --ui",
     "update": "surfer update",
-    "start": "surfer run",
+    "start": "node scripts/mach.mjs run",
+    "test": "node scripts/keybindings.mjs --check && node scripts/mach.mjs test",
+    "keybindings": "node scripts/keybindings.mjs",
     "reset": "surfer reset"
   },
   "devDependencies": {

@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf-8" />
+<body style="height: 5000px; margin: 0">
+  <input id="field" />
+  <button id="button">button</button>
+  <a id="link" href="file_vimbra.html?opened">link</a>
+  <p id="match1">needle one</p>
+  <p id="match2">needle two</p>
+  <script>
+    window.seenKeys = [];
+    window.clicks = 0;
+    window.addEventListener("keydown", e => window.seenKeys.push(e.key), true);
+    document
+      .getElementById("button")
+      .addEventListener("click", () => window.clicks++);
+  </script>
+</body>

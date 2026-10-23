@@ -20,7 +20,7 @@ Surfer commands run from `overlay/`. The root `Makefile` does this automatically
 `surfer import` processes `src/`:
 
 - `.patch` files are applied to `engine/` with `git apply`.
-- All other files are symlinked to the same path in `engine/` (copied on Windows).
+- All other files are symlinked to the same path in `engine/`.
 
 `surfer export <path>` turns an edited Firefox file in `engine/` into a patch in `src/`,
 by diffing against the stock Firefox commit that `surfer download` creates in `engine/.git`.
@@ -40,6 +40,23 @@ make run
 ```
 
 UI-only changes (JS, CSS, XHTML) rebuild faster with `make build-ui`.
+
+`make run` and `make test` call mach through `scripts/mach.mjs`, which adds two flags:
+
+- A pref that lets the macOS content sandbox read `src/`. Dev builds load `src/` files
+  through symlinks, and the sandbox otherwise only allows `engine/` and the objdir.
+- `-purgecaches` on `make run`, so edited JS modules are loaded instead of the
+  profile's cached copies.
+
+Edits to existing JS files need only a restart. New files and `moz.build` changes
+need `make import` and a build.
+
+## Keybindings
+
+Commands and their default keys are defined in
+`src/browser/components/vimbra/VimbraCommands.sys.mjs`. After changing them, run
+`make keybindings` to regenerate `docs/KEYBINDINGS.md`; `make test` fails while
+that file is out of date.
 
 Each `make` target runs the npm script of the same name in `overlay/package.json`
 (`make run` is `npm run start`), so `cd overlay && npm run <script>` is equivalent.

@@ -1,0 +1,28 @@
+diff --git a/browser/components/DesktopActorRegistry.sys.mjs b/browser/components/DesktopActorRegistry.sys.mjs
+index 4ceb32d5517d39074842e78c4f48b06c48e0881d..622eab00f05daf60e7c057cf5121e65e71515db6 100644
+--- a/browser/components/DesktopActorRegistry.sys.mjs
++++ b/browser/components/DesktopActorRegistry.sys.mjs
+@@ -1102,6 +1102,23 @@ let JSWINDOWACTORS = {
+     remoteTypes: ["parent", "privilegedabout"],
+   },
+ 
++  Vimbra: {
++    parent: {
++      esModuleURI:
++        "moz-src:///browser/components/vimbra/actors/VimbraParent.sys.mjs",
++    },
++    child: {
++      esModuleURI:
++        "moz-src:///browser/components/vimbra/actors/VimbraChild.sys.mjs",
++      events: {
++        keydown: { capture: true },
++        keyup: { capture: true },
++      },
++    },
++    allFrames: true,
++    safeForUntrustedWebProcess: true,
++  },
++
+   WebRTC: {
+     parent: {
+       esModuleURI: "resource:///actors/WebRTCParent.sys.mjs",

@@ -1,0 +1,12 @@
+diff --git a/browser/components/moz.build b/browser/components/moz.build
+index 8a1611d5d14fa692c086e0c35ce608f3de2dfaf6..2486b77635c21e9be82523e3312e26abc378a3f7 100644
+--- a/browser/components/moz.build
++++ b/browser/components/moz.build
+@@ -81,6 +81,7 @@ DIRS += [
+     "translations",
+     "uitour",
+     "urlbar",
++    "vimbra",
+     "webrtc",
+ ]
+ 
