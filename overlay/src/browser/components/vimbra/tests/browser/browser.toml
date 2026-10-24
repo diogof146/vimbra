@@ -2,6 +2,8 @@
 head = "head.js"
 support-files = ["file_vimbra.html"]
 
+["browser_vimbra_brand.js"]
+
 ["browser_vimbra_hints.js"]
 
 ["browser_vimbra_keymap.js"]
@@ -9,3 +11,5 @@ support-files = ["file_vimbra.html"]
 ["browser_vimbra_keys.js"]
 
 ["browser_vimbra_navigation.js"]
+
+["browser_vimbra_theme.js"]

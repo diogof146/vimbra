@@ -1,0 +1,235 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* Settings, add-ons, the Library window and dialogs. Most of the colour
+ * comes from the design-system token mapping in vimbra-tokens.css; this file
+ * sets type, surfaces and removes Firefox-only clutter. */
+
+@-moz-document url-prefix("about:preferences"),
+  url-prefix("about:settings"),
+  url-prefix("about:addons"),
+  url-prefix("chrome://browser/content/places/"),
+  url-prefix("chrome://browser/content/preferences/"),
+  url-prefix("chrome://global/content/commonDialog") {
+
+  :root:not(#vb) {
+    font-family: var(--vb-font);
+    background-color: var(--vb-page);
+    color: var(--vb-fg);
+    caret-color: var(--vb-accent);
+  }
+  :root:not(#vb) body {
+    background-color: var(--vb-page) !important;
+    color: var(--vb-fg);
+    font-family: var(--vb-font);
+  }
+  ::selection {
+    background-color: color-mix(in srgb, var(--vb-accent) 35%, transparent);
+  }
+  /* Firefox fades placeholders to 54% of the text colour, which drops below
+   * 4.5:1 on light fields; use the theme's muted colour instead. */
+  ::placeholder {
+    color: var(--vb-muted) !important;
+    opacity: 1 !important;
+  }
+
+  /* Text fields: a lighter fill on focus, no glow ring. */
+  :is(moz-input-search, moz-input-text, moz-input-url, moz-input-email, moz-input-password, moz-input-tel, moz-input-number, moz-input-folder) {
+    --input-text-background-color: var(--vb-field);
+    /* Their placeholder is drawn at 54% of this colour inside the shadow DOM,
+     * out of reach; Dia uses a near-black so it stays readable. */
+    --input-text-color: var(--vb-input-fg, var(--vb-fg));
+    --input-text-border-color: transparent;
+    --input-text-border-radius: var(--vb-radius);
+    --focus-outline-color: transparent;
+    &:focus-within {
+      --input-text-background-color: var(--vb-field-hi);
+    }
+  }
+  :is(input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"]), textarea, search-textbox, .tabsFilter) {
+    background-color: var(--vb-field) !important;
+    color: var(--vb-fg) !important;
+    border-color: transparent !important;
+    border-radius: var(--vb-radius) !important;
+    box-shadow: none !important;
+    &:focus,
+    &:focus-within {
+      background-color: var(--vb-field-hi) !important;
+      outline: none !important;
+    }
+  }
+
+  kbd,
+  code,
+  .text-mono {
+    font-family: var(--vb-font-mono);
+  }
+
+  /* Dialogs and the Library window */
+  dialog,
+  window,
+  .dialogBox,
+  #placesView,
+  #placesToolbar,
+  #placesMenu,
+  tree,
+  #detailsPane {
+    background-color: var(--vb-chrome);
+    color: var(--vb-fg);
+  }
+  tree {
+    background-color: var(--vb-page) !important;
+    border-color: var(--vb-line) !important;
+  }
+  treechildren::-moz-tree-row(selected) {
+    background-color: color-mix(in srgb, var(--vb-accent) 22%, transparent) !important;
+  }
+  treechildren::-moz-tree-cell-text(selected) {
+    color: var(--vb-fg) !important;
+  }
+}
+
+/* ---------- about:preferences ---------- */
+
+@-moz-document url-prefix("about:preferences"), url-prefix("about:settings") {
+
+  /* Category list */
+  #categories {
+    --page-nav-button-border-radius: 6px;
+    --page-nav-button-background-color-selected: color-mix(in srgb, var(--vb-fg) 7%, transparent);
+    --page-nav-button-text-color: var(--vb-fg-2);
+    --page-nav-button-text-color-selected: var(--vb-fg);
+    --page-nav-button-text-color-hover: var(--vb-fg);
+    --page-nav-button-background-color-hover: color-mix(in srgb, var(--vb-fg) 5%, transparent);
+    --page-nav-border-color: var(--vb-line);
+  }
+  moz-page-nav-button {
+    --page-nav-button-border-radius: 6px;
+  }
+
+  /* Firefox-only promotions, the Firefox theme picker (it would fight
+   * Vimbra's themes) and Mozilla's Relay email masks. */
+  moz-promo.settings-redesign-promo,
+  setting-group[groupid="browserTheme"],
+  #category-more-from-mozilla,
+  [data-l10n-id^="preferences-privacy-relay"] {
+    display: none !important;
+  }
+
+  moz-card,
+  .card {
+    --card-background-color: var(--vb-chrome);
+    --card-border-color: var(--vb-line);
+    --card-border-radius: var(--vb-radius-lg);
+  }
+
+  /* ---------- Vimbra theme picker (injected by VimbraSettingsChild) ---------- */
+
+  .vimbra-theme-card {
+    display: grid;
+    gap: 14px;
+    margin-block: 0 24px;
+    padding: 18px 20px 20px;
+    background: var(--vb-chrome);
+    border: 1px solid var(--vb-line);
+    border-radius: var(--vb-radius-lg);
+  }
+  .vimbra-theme-card h2 {
+    margin: 0;
+    font-size: 1.05em;
+    font-weight: 600;
+    color: var(--vb-fg);
+  }
+  .vimbra-theme-card p {
+    margin: -8px 0 0;
+    color: var(--vb-fg-2);
+  }
+  .vimbra-swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+    gap: 10px;
+  }
+  .vimbra-swatch {
+    appearance: none;
+    display: grid;
+    gap: 8px;
+    justify-items: start;
+    margin: 0;
+    padding: 5px;
+    min-width: 0;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--vb-fg-2);
+    font: inherit;
+    cursor: pointer;
+    &:hover {
+      color: var(--vb-fg);
+    }
+    &[aria-pressed="true"] {
+      color: var(--vb-fg);
+    }
+    &[aria-pressed="true"] .vimbra-mini {
+      box-shadow: 0 0 0 1.5px var(--vb-accent);
+    }
+    &:focus-visible {
+      outline: 1.5px solid var(--vb-accent);
+      outline-offset: 2px;
+    }
+  }
+  .vimbra-mini {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    border-radius: 7px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px var(--vb-line);
+    > span {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-rows: 5px 8px 1fr;
+      &:nth-child(2) {
+        clip-path: polygon(100% 0, 100% 100%, 0 100%);
+      }
+    }
+    i {
+      display: block;
+    }
+    i:last-child {
+      display: grid;
+      place-items: center;
+    }
+    b {
+      display: block;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px #12062b;
+    }
+  }
+  .vimbra-swatch-name {
+    padding-inline-start: 2px;
+    font-size: 0.92em;
+  }
+}
+
+/* ---------- about:addons ---------- */
+
+@-moz-document url-prefix("about:addons") {
+  #categories .category {
+    border-radius: 6px;
+  }
+  #categories .category[selected] {
+    background-color: color-mix(in srgb, var(--vb-fg) 7%, transparent);
+    color: var(--vb-fg);
+  }
+  /* Firefox theme add-ons would override Vimbra's own themes. */
+  #categories .category[name="theme"],
+  .sidebar-footer-list,
+  recommended-addon-list,
+  taar-notice {
+    display: none !important;
+  }
+}

@@ -1,0 +1,371 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* Vimbra theme tokens. Every surface Vimbra styles reads its colours and fonts
+ * from these --vb-* tokens; the theme is picked by the vimbra.theme pref
+ * (noite, ametista, iris, brasa, cobalto, dia, sistema) and switches live, because
+ * -moz-pref() media queries re-evaluate when the pref changes.
+ * vimbra.theme.preview overrides it while the settings picker is hovered.
+ *
+ * The palette comes from the owl mark: each theme also tints the owl's iris. */
+
+/* Fonts ship inside the browser (no network fetch) and are declared only for
+ * these privileged documents, so web pages cannot detect them. about:vimbra is
+ * unprivileged and cannot read chrome:// files, so it uses the system font. */
+@-moz-document url("chrome://browser/content/browser.xhtml"),
+  url-prefix("chrome://browser/content/places/"),
+  url-prefix("chrome://browser/content/preferences/"),
+  url-prefix("chrome://global/content/commonDialog"),
+  url-prefix("about:preferences"),
+  url-prefix("about:settings"),
+  url-prefix("about:addons") {
+  @font-face {
+    font-family: "Geist";
+    src: url("chrome://browser/content/vimbra/fonts/Geist-latin.woff2") format("woff2");
+    font-weight: 100 900;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: "Geist";
+    src: url("chrome://browser/content/vimbra/fonts/Geist-latin-ext.woff2") format("woff2");
+    font-weight: 100 900;
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: "Geist Mono";
+    src: url("chrome://browser/content/vimbra/fonts/GeistMono-latin.woff2") format("woff2");
+    font-weight: 100 900;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: "Geist Mono";
+    src: url("chrome://browser/content/vimbra/fonts/GeistMono-latin-ext.woff2") format("woff2");
+    font-weight: 100 900;
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+}
+
+/* Browser windows, Vimbra's own pages and the Firefox pages we restyle.
+ * Web content never matches, so pages cannot observe the theme. */
+@-moz-document url("chrome://browser/content/browser.xhtml"),
+  url-prefix("chrome://browser/content/places/"),
+  url-prefix("chrome://browser/content/preferences/"),
+  url-prefix("chrome://global/content/commonDialog"),
+  url-prefix("about:preferences"),
+  url-prefix("about:settings"),
+  url-prefix("about:addons"),
+  url-prefix("about:vimbra") {
+
+  /* :not(#vb) lifts specificity above Firefox's own :root rules. */
+
+  /* Noite: the default, and the Figma original. */
+  :root:not(#vb) {
+    color-scheme: dark;
+    --vb-strip: #1b1b1b;
+    --vb-chrome: #090909;
+    --vb-page: #0f0f0f;
+    --vb-field: #252424;
+    --vb-field-hi: #2e2d2d;
+    --vb-line: #1f1f1f;
+    --vb-fg: #ecebef;
+    --vb-fg-2: #a19fa6;
+    --vb-muted: #8c8a91;
+    --vb-icon: #6a686e;
+    --vb-accent: #2ee6d6;
+    --vb-on-accent: #04201e;
+    --vb-iris-hi: #c9fff6;
+    --vb-iris-mid: #2ee6d6;
+    --vb-iris-lo: #0891b2;
+    --vb-close-hover: #e5382b;
+    --vb-shadow: 0 22px 60px -18px rgba(0, 0, 0, 0.75);
+    --vb-backdrop: none;
+    --vb-grain: none;
+
+    --vb-font: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --vb-font-mono: "Geist Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    --vb-radius: 5px;
+    --vb-radius-lg: 12px;
+  }
+
+  @media -moz-pref("vimbra.theme", "ametista") {
+    :root:not(#vb) {
+      color-scheme: dark;
+      --vb-strip: #1d1231; --vb-chrome: #0c0618; --vb-page: #12082a;
+      --vb-field: #241641; --vb-field-hi: #2e1d52; --vb-line: #24183c;
+      --vb-fg: #f2ebff; --vb-fg-2: #ab9dca; --vb-muted: #8d7ead; --vb-icon: #7d6ca3;
+      --vb-accent: #f06bc4; --vb-on-accent: #2a0620;
+      --vb-iris-hi: #ffe3f2; --vb-iris-mid: #ff4f8b; --vb-iris-lo: #b5179e;
+    }
+  }
+  @media -moz-pref("vimbra.theme", "iris") {
+    :root:not(#vb) {
+      color-scheme: dark;
+      --vb-strip: #0d1f22; --vb-chrome: #041012; --vb-page: #071719;
+      --vb-field: #11292c; --vb-field-hi: #173438; --vb-line: #112528;
+      --vb-fg: #e3fbf8; --vb-fg-2: #8fbab5; --vb-muted: #6c938e; --vb-icon: #5e8984;
+      --vb-accent: #5cf2e4; --vb-on-accent: #032421;
+      --vb-iris-hi: #f2fffc; --vb-iris-mid: #7cf5e9; --vb-iris-lo: #0e7490;
+    }
+  }
+  @media -moz-pref("vimbra.theme", "brasa") {
+    :root:not(#vb) {
+      color-scheme: dark;
+      --vb-strip: #1f150e; --vb-chrome: #0c0805; --vb-page: #140e09;
+      --vb-field: #2a1e15; --vb-field-hi: #34261b; --vb-line: #241a11;
+      --vb-fg: #fcefe1; --vb-fg-2: #bda58c; --vb-muted: #9a836c; --vb-icon: #8d735c;
+      --vb-accent: #ffb547; --vb-on-accent: #2b1a03;
+      --vb-iris-hi: #fff4d6; --vb-iris-mid: #ffb547; --vb-iris-lo: #e0711a;
+    }
+  }
+  @media -moz-pref("vimbra.theme", "cobalto") {
+    :root:not(#vb) {
+      color-scheme: dark;
+      --vb-strip: #0b1022; --vb-chrome: #070a16; --vb-page: #0a0d18;
+      --vb-field: #111a3a; --vb-field-hi: #172350; --vb-line: #121a33;
+      --vb-fg: #eaf0ff; --vb-fg-2: #a4b6dc; --vb-muted: #8193c0; --vb-icon: #6f82b3;
+      --vb-accent: #5b8cff; --vb-on-accent: #040a1f;
+      --vb-iris-hi: #eef3ff; --vb-iris-mid: #5b8cff; --vb-iris-lo: #1a3fa8;
+      --vb-shadow: 0 22px 60px -18px rgba(2, 4, 16, 0.85);
+      /* The wallpaper: cobalt pools on near-black, pale light at two corners. */
+      --vb-backdrop:
+        radial-gradient(42% 60% at 0% 100%, rgba(245, 246, 240, 0.9), rgba(154, 183, 221, 0.35) 45%, transparent 75%),
+        radial-gradient(38% 55% at 100% 0%, rgba(232, 238, 246, 0.85), rgba(154, 183, 221, 0.3) 45%, transparent 75%),
+        radial-gradient(60% 70% at 55% 8%, #1b45b0 0%, #122f7e 35%, transparent 72%),
+        radial-gradient(55% 60% at 30% 92%, #1a43ad 0%, #0f1f55 45%, transparent 78%),
+        radial-gradient(45% 55% at 82% 70%, #04060f 0%, transparent 80%);
+      --vb-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+  }
+  @media -moz-pref("vimbra.theme", "dia"),
+         -moz-pref("vimbra.theme", "sistema") and (prefers-color-scheme: light) {
+    :root:not(#vb) {
+      color-scheme: light;
+      --vb-strip: #e3dfeb; --vb-chrome: #f4f2f8; --vb-page: #fbfaff;
+      --vb-field: #e9e6f1; --vb-field-hi: #dfdbea; --vb-line: #d8d3e3;
+      --vb-fg: #2a0f5c; --vb-fg-2: #5d4f7a; --vb-muted: #6e6289; --vb-icon: #8a7fa3;
+      --vb-accent: #7c3aed; --vb-on-accent: #ffffff;
+      --vb-input-fg: #12062b;
+      --vb-iris-hi: #c9fff6; --vb-iris-mid: #2ee6d6; --vb-iris-lo: #0891b2;
+      --vb-shadow: 0 22px 60px -20px rgba(42, 15, 92, 0.28);
+    }
+  }
+
+  /* Live preview from the settings picker: same values, later in the cascade. */
+  @media -moz-pref("vimbra.theme.preview", "noite") {
+    :root:not(#vb) {
+      color-scheme: dark;
+      --vb-backdrop: none; --vb-grain: none;
+      --vb-strip: #1b1b1b; --vb-chrome: #090909; --vb-page: #0f0f0f;
+      --vb-field: #252424; --vb-field-hi: #2e2d2d; --vb-line: #1f1f1f;
+      --vb-fg: #ecebef; --vb-fg-2: #a19fa6; --vb-muted: #8c8a91; --vb-icon: #6a686e;
+      --vb-accent: #2ee6d6; --vb-on-accent: #04201e;
+      --vb-iris-hi: #c9fff6; --vb-iris-mid: #2ee6d6; --vb-iris-lo: #0891b2;
+      --vb-shadow: 0 22px 60px -18px rgba(0, 0, 0, 0.75);
+    }
+  }
+  @media -moz-pref("vimbra.theme.preview", "ametista") {
+    :root:not(#vb) {
+      color-scheme: dark;
+      --vb-backdrop: none; --vb-grain: none;
+      --vb-strip: #1d1231; --vb-chrome: #0c0618; --vb-page: #12082a;
+      --vb-field: #241641; --vb-field-hi: #2e1d52; --vb-line: #24183c;
+      --vb-fg: #f2ebff; --vb-fg-2: #ab9dca; --vb-muted: #8d7ead; --vb-icon: #7d6ca3;
+      --vb-accent: #f06bc4; --vb-on-accent: #2a0620;
+      --vb-iris-hi: #ffe3f2; --vb-iris-mid: #ff4f8b; --vb-iris-lo: #b5179e;
+      --vb-shadow: 0 22px 60px -18px rgba(0, 0, 0, 0.75);
+    }
+  }
+  @media -moz-pref("vimbra.theme.preview", "iris") {
+    :root:not(#vb) {
+      color-scheme: dark;
+      --vb-backdrop: none; --vb-grain: none;
+      --vb-strip: #0d1f22; --vb-chrome: #041012; --vb-page: #071719;
+      --vb-field: #11292c; --vb-field-hi: #173438; --vb-line: #112528;
+      --vb-fg: #e3fbf8; --vb-fg-2: #8fbab5; --vb-muted: #6c938e; --vb-icon: #5e8984;
+      --vb-accent: #5cf2e4; --vb-on-accent: #032421;
+      --vb-iris-hi: #f2fffc; --vb-iris-mid: #7cf5e9; --vb-iris-lo: #0e7490;
+      --vb-shadow: 0 22px 60px -18px rgba(0, 0, 0, 0.75);
+    }
+  }
+  @media -moz-pref("vimbra.theme.preview", "brasa") {
+    :root:not(#vb) {
+      color-scheme: dark;
+      --vb-backdrop: none; --vb-grain: none;
+      --vb-strip: #1f150e; --vb-chrome: #0c0805; --vb-page: #140e09;
+      --vb-field: #2a1e15; --vb-field-hi: #34261b; --vb-line: #241a11;
+      --vb-fg: #fcefe1; --vb-fg-2: #bda58c; --vb-muted: #9a836c; --vb-icon: #8d735c;
+      --vb-accent: #ffb547; --vb-on-accent: #2b1a03;
+      --vb-iris-hi: #fff4d6; --vb-iris-mid: #ffb547; --vb-iris-lo: #e0711a;
+      --vb-shadow: 0 22px 60px -18px rgba(0, 0, 0, 0.75);
+    }
+  }
+  @media -moz-pref("vimbra.theme.preview", "cobalto") {
+    :root:not(#vb) {
+      color-scheme: dark;
+      --vb-strip: #0b1022; --vb-chrome: #070a16; --vb-page: #0a0d18;
+      --vb-field: #111a3a; --vb-field-hi: #172350; --vb-line: #121a33;
+      --vb-fg: #eaf0ff; --vb-fg-2: #a4b6dc; --vb-muted: #8193c0; --vb-icon: #6f82b3;
+      --vb-accent: #5b8cff; --vb-on-accent: #040a1f;
+      --vb-iris-hi: #eef3ff; --vb-iris-mid: #5b8cff; --vb-iris-lo: #1a3fa8;
+      --vb-shadow: 0 22px 60px -18px rgba(2, 4, 16, 0.85);
+      /* The wallpaper: cobalt pools on near-black, pale light at two corners. */
+      --vb-backdrop:
+        radial-gradient(42% 60% at 0% 100%, rgba(245, 246, 240, 0.9), rgba(154, 183, 221, 0.35) 45%, transparent 75%),
+        radial-gradient(38% 55% at 100% 0%, rgba(232, 238, 246, 0.85), rgba(154, 183, 221, 0.3) 45%, transparent 75%),
+        radial-gradient(60% 70% at 55% 8%, #1b45b0 0%, #122f7e 35%, transparent 72%),
+        radial-gradient(55% 60% at 30% 92%, #1a43ad 0%, #0f1f55 45%, transparent 78%),
+        radial-gradient(45% 55% at 82% 70%, #04060f 0%, transparent 80%);
+      --vb-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+  }
+  @media -moz-pref("vimbra.theme.preview", "dia"),
+         -moz-pref("vimbra.theme.preview", "sistema") and (prefers-color-scheme: light) {
+    :root:not(#vb) {
+      color-scheme: light;
+      --vb-backdrop: none; --vb-grain: none;
+      --vb-strip: #e3dfeb; --vb-chrome: #f4f2f8; --vb-page: #fbfaff;
+      --vb-field: #e9e6f1; --vb-field-hi: #dfdbea; --vb-line: #d8d3e3;
+      --vb-fg: #2a0f5c; --vb-fg-2: #5d4f7a; --vb-muted: #6e6289; --vb-icon: #8a7fa3;
+      --vb-accent: #7c3aed; --vb-on-accent: #ffffff;
+      --vb-input-fg: #12062b;
+      --vb-iris-hi: #c9fff6; --vb-iris-mid: #2ee6d6; --vb-iris-lo: #0891b2;
+      --vb-shadow: 0 22px 60px -20px rgba(42, 15, 92, 0.28);
+    }
+  }
+  @media -moz-pref("vimbra.theme.preview", "sistema") and (prefers-color-scheme: dark) {
+    :root:not(#vb) {
+      color-scheme: dark;
+      --vb-backdrop: none; --vb-grain: none;
+      --vb-strip: #1b1b1b; --vb-chrome: #090909; --vb-page: #0f0f0f;
+      --vb-field: #252424; --vb-field-hi: #2e2d2d; --vb-line: #1f1f1f;
+      --vb-fg: #ecebef; --vb-fg-2: #a19fa6; --vb-muted: #8c8a91; --vb-icon: #6a686e;
+      --vb-accent: #2ee6d6; --vb-on-accent: #04201e;
+      --vb-iris-hi: #c9fff6; --vb-iris-mid: #2ee6d6; --vb-iris-lo: #0891b2;
+      --vb-shadow: 0 22px 60px -18px rgba(0, 0, 0, 0.75);
+    }
+  }
+
+  /* Scrollbars in Vimbra's own surfaces: a thin pill in the theme accent,
+   * no track. Inherited by every scroller (menus, panels, results, pages). */
+  :root:not(#vb) {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--vb-accent) 45%, transparent) transparent;
+  }
+
+  /* Map Firefox's design-system tokens onto ours, so every Firefox widget
+   * (buttons, cards, menus, panels, inputs) follows the theme. */
+  :root:not(#vb) {
+    --background-color-canvas: var(--vb-page);
+    --background-color-box: var(--vb-field);
+    --background-color-list-item-hover: color-mix(in srgb, var(--vb-fg) 7%, transparent);
+    --text-color: var(--vb-fg);
+    --text-color-deemphasized: var(--vb-fg-2);
+    --text-color-disabled: var(--vb-muted);
+    --text-color-list-item-hover: var(--vb-fg);
+    --icon-color: var(--vb-fg-2);
+    --border-color: var(--vb-line);
+    --border-color-deemphasized: var(--vb-line);
+    --border-color-card: var(--vb-line);
+    --border-color-interactive: var(--vb-field-hi);
+    --border-color-interactive-hover: var(--vb-muted);
+    --border-color-selected: var(--vb-accent);
+    --color-accent-primary: var(--vb-accent);
+    --color-accent-primary-hover: color-mix(in srgb, var(--vb-accent) 86%, var(--vb-fg));
+    --color-accent-primary-active: color-mix(in srgb, var(--vb-accent) 74%, var(--vb-fg));
+    --color-accent-primary-selected: var(--vb-accent);
+    --text-color-accent-primary-selected: var(--vb-on-accent);
+    --focus-outline-color: var(--vb-accent);
+    --link-color: var(--vb-accent);
+    --link-color-hover: color-mix(in srgb, var(--vb-accent) 80%, var(--vb-fg));
+    --link-color-active: var(--vb-accent);
+
+    --button-background-color: var(--vb-field);
+    --button-background-color-hover: var(--vb-field-hi);
+    --button-background-color-active: color-mix(in srgb, var(--vb-field-hi) 80%, var(--vb-fg));
+    --button-text-color: var(--vb-fg);
+    --button-text-color-hover: var(--vb-fg);
+    --button-border-color: transparent;
+    --button-background-color-primary: var(--vb-accent);
+    --button-background-color-primary-hover: color-mix(in srgb, var(--vb-accent) 86%, var(--vb-fg));
+    --button-background-color-primary-active: color-mix(in srgb, var(--vb-accent) 74%, var(--vb-fg));
+    --button-text-color-primary: var(--vb-on-accent);
+    --button-text-color-primary-hover: var(--vb-on-accent);
+    --button-text-color-primary-active: var(--vb-on-accent);
+    --button-background-color-ghost-hover: color-mix(in srgb, var(--vb-fg) 7%, transparent);
+    --button-background-color-ghost-active: color-mix(in srgb, var(--vb-fg) 12%, transparent);
+    --button-border-radius: var(--vb-radius);
+
+    --card-background-color: var(--vb-chrome);
+    --card-border-color: var(--vb-line);
+    --card-border-radius: var(--vb-radius-lg);
+    --card-box-shadow: none;
+    --input-border-color: var(--vb-field-hi);
+    --input-bgcolor: var(--vb-field);
+    --input-color: var(--vb-fg);
+    --table-background-color: var(--vb-chrome);
+    --table-border-color: var(--vb-line);
+    --table-header-background-color: var(--vb-field);
+    --table-row-background-color-alternate: color-mix(in srgb, var(--vb-fg) 3%, transparent);
+
+    --panel-background-color: var(--vb-chrome);
+    --panel-text-color: var(--vb-fg);
+    --panel-border-color: var(--vb-line);
+    --panel-border-radius: 10px;
+    --panel-separator-color: var(--vb-line);
+    --panel-background-color-dimmed: color-mix(in srgb, var(--vb-fg) 7%, transparent);
+    --panel-background-color-dimmed-further: color-mix(in srgb, var(--vb-fg) 12%, transparent);
+    --panel-menuitem-border-radius: var(--vb-radius);
+    --arrowpanel-background: var(--vb-chrome);
+    --arrowpanel-color: var(--vb-fg);
+    --arrowpanel-border-color: var(--vb-line);
+    --arrowpanel-dimmed: color-mix(in srgb, var(--vb-fg) 7%, transparent);
+    --arrowpanel-dimmed-further: color-mix(in srgb, var(--vb-fg) 12%, transparent);
+    --menuitem-border-radius: var(--vb-radius);
+
+    --toolbar-background-color: var(--vb-chrome);
+    --toolbar-bgcolor: var(--vb-chrome);
+    --toolbar-color: var(--vb-fg);
+    --toolbar-text-color: var(--vb-fg);
+    --toolbar-field-background-color: var(--vb-field);
+    --toolbar-field-background-color-focus: var(--vb-field-hi);
+    --toolbar-field-focus-background-color: var(--vb-field-hi);
+    --toolbar-field-color: var(--vb-fg);
+    --toolbar-field-focus-color: var(--vb-fg);
+    --toolbar-field-text-color: var(--vb-fg);
+    --toolbar-field-text-color-focus: var(--vb-fg);
+    --toolbar-field-border-color: transparent;
+    --toolbar-field-border-color-focus: transparent;
+    --toolbar-field-focus-border-color: transparent;
+    --toolbarbutton-icon-fill: var(--vb-icon);
+    --toolbarbutton-border-radius: 6px;
+    --toolbarbutton-background-color-hover: color-mix(in srgb, var(--vb-field) 60%, transparent);
+    --toolbarbutton-background-color-active: var(--vb-field);
+    --toolbarbutton-hover-background: color-mix(in srgb, var(--vb-field) 60%, transparent);
+    --toolbarbutton-active-background: var(--vb-field);
+    --toolbarseparator-color: var(--vb-line);
+    --toolbox-background-color: var(--vb-strip);
+    --toolbox-background-color-inactive: var(--vb-strip);
+    --toolbox-text-color: var(--vb-fg);
+    --toolbox-text-color-inactive: var(--vb-fg-2);
+    --tabs-navbar-separator-style: none;
+    --chrome-content-separator-color: var(--vb-line);
+    --sidebar-background-color: var(--vb-chrome);
+    --sidebar-text-color: var(--vb-fg);
+    --sidebar-border-color: var(--vb-line);
+    --tab-selected-textcolor: var(--vb-fg);
+    --tab-background-color-selected: var(--vb-chrome);
+    --tab-selected-bgcolor: var(--vb-chrome);
+    --tab-selected-shadow: none;
+    --tab-box-shadow: none;
+
+    --urlbar-box-background-color: var(--vb-field-hi);
+    --urlbar-box-background-color-hover: var(--vb-field-hi);
+    --urlbar-box-background-color-focus: var(--vb-field-hi);
+    --urlbarview-background-color-hover: color-mix(in srgb, var(--vb-fg) 7%, transparent);
+    --urlbarview-background-color-selected: color-mix(in srgb, var(--vb-fg) 10%, transparent);
+    --urlbarview-text-color-selected: var(--vb-fg);
+    --urlbarview-text-color-action: var(--vb-fg-2);
+    --urlbarview-separator-color: var(--vb-line);
+  }
+}

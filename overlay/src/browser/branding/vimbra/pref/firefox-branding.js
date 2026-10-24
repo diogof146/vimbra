@@ -27,6 +27,10 @@ pref("app.update.checkInstallTime.days", 2);
 // button. default=immediately
 pref("app.update.badgeWaitTime", 0);
 
+// Vimbra theme: noite, ametista, iris, brasa, dia or sistema (follows the OS).
+// See browser/components/vimbra/VimbraTheme.sys.mjs.
+pref("vimbra.theme", "noite");
+
 // Number of usages of the web console.
 // If this is less than 5, then pasting code into the web console is disabled
 pref("devtools.selfxss.count", 5);
