@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="512" height="512" role="img" aria-label="Vimbra">
+  <title>Vimbra</title>
+  <defs>
+    <radialGradient id="iris" cx="0.45" cy="0.6" r="0.7">
+      <stop offset="0" stop-color="#C9FFF6"/>
+      <stop offset="0.45" stop-color="#2EE6D6"/>
+      <stop offset="1" stop-color="#0891B2"/>
+    </radialGradient>
+    <clipPath id="lidL"><polygon points="58,99 128,115 128,170 58,170"/></clipPath>
+    <clipPath id="lidR"><polygon points="198,99 128,115 128,170 198,170"/></clipPath>
+  </defs>
+
+  <polygon points="36,18 104,64 44,96"    fill="#FF4F8B"/>
+  <polygon points="220,18 212,96 152,64"  fill="#B5179E"/>
+  <polygon points="104,64 128,58 128,102" fill="#F43F9E"/>
+  <polygon points="128,58 152,64 128,102" fill="#C026D3"/>
+  <polygon points="104,64 128,102 44,96"  fill="#E1308F"/>
+  <polygon points="152,64 212,96 128,102" fill="#9D1FB8"/>
+  <polygon points="44,96 128,102 58,162"  fill="#A21CAF"/>
+  <polygon points="212,96 198,162 128,102" fill="#7A1FA2"/>
+  <polygon points="58,162 128,102 128,192" fill="#7C3AED"/>
+  <polygon points="128,102 198,162 128,192" fill="#5B21B6"/>
+  <polygon points="58,162 128,192 128,238" fill="#4C1D95"/>
+  <polygon points="198,162 128,238 128,192" fill="#2E1065"/>
+
+  <g clip-path="url(#lidL)">
+    <circle cx="94" cy="124" r="27" fill="#12062B"/>
+    <circle cx="94" cy="124" r="19" fill="url(#iris)"/>
+    <circle cx="97" cy="129" r="8.5" fill="#12062B"/>
+    <circle cx="90" cy="121" r="3.5" fill="#FFFFFF"/>
+  </g>
+  <g clip-path="url(#lidR)">
+    <circle cx="162" cy="124" r="27" fill="#12062B"/>
+    <circle cx="162" cy="124" r="19" fill="url(#iris)"/>
+    <circle cx="159" cy="129" r="8.5" fill="#12062B"/>
+    <circle cx="166" cy="121" r="3.5" fill="#FFFFFF"/>
+  </g>
+
+  <polygon points="56,94 128,110 128,118 60,104" fill="#FFB547"/>
+  <polygon points="200,94 128,110 128,118 196,104" fill="#F08A24"/>
+
+  <polygon points="128,142 141,158 128,186 115,158" fill="#FFB547"/>
+  <polygon points="128,142 141,158 128,186" fill="#F08A24"/>
+</svg>

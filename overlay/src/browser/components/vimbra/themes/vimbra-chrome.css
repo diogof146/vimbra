@@ -1,0 +1,437 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* Vimbra browser window: a 36px tab strip, a 54px toolbar, then the page.
+ * Colours come from vimbra-tokens.css. Window controls stay native on every
+ * platform (traffic lights on macOS, caption buttons on Windows, GTK on Linux);
+ * only their colours are tuned. */
+
+@-moz-document url("chrome://browser/content/browser.xhtml"),
+  url-prefix("chrome://browser/content/places/") {
+
+  /* ---------- type ---------- */
+
+  /* Window caption buttons draw their glyphs with an icon font, so they keep
+   * Firefox's font. */
+  :root:not(#vb) :not(.titlebar-button, .titlebar-button *) {
+    font-family: var(--vb-font);
+  }
+  :root:not(#vb) {
+    --tabpanel-background-color: var(--vb-page);
+  }
+
+  /* ---------- toolbox ---------- */
+
+  #navigator-toolbox {
+    background: var(--vb-strip) !important;
+    color: var(--vb-fg) !important;
+    border-bottom: 0 !important;
+  }
+  #tabbrowser-tabpanels,
+  #tabbrowser-tabbox,
+  #browser {
+    background-color: var(--vb-page) !important;
+  }
+
+  /* ---------- tab strip ---------- */
+
+  #TabsToolbar,
+  #tabbrowser-tabs {
+    --tab-min-height: 36px !important;
+    --tab-block-margin: 0px !important;
+    --tab-border-radius: 0px;
+    --tab-inner-inline-margin: 0px;
+    min-height: 36px !important;
+  }
+  #TabsToolbar {
+    background: var(--vb-strip) !important;
+  }
+  /* Room to drag the window; macOS keeps its own space for the traffic lights. */
+  @media not (-moz-platform: macos) {
+    #TabsToolbar .titlebar-spacer[type="pre-tabs"] {
+      width: 8px !important;
+    }
+  }
+  #TabsToolbar .titlebar-spacer[type="post-tabs"] {
+    width: 24px !important;
+  }
+  #TabsToolbar .titlebar-spacer {
+    border: 0 !important;
+  }
+
+  .tabbrowser-tab {
+    position: relative;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 36px !important;
+    color: var(--vb-fg-2) !important;
+    /* Only settled tabs: Firefox animates max-width while a tab opens or
+     * closes ([fadein] absent) and removes it when that transition ends. */
+    &:not([pinned])[fadein] {
+      max-width: 240px !important;
+    }
+    &:hover,
+    &[selected] {
+      color: var(--vb-fg) !important;
+    }
+    /* 2px rounded divider between two unselected tabs, as in the prototype */
+    &:not([selected], [multiselected]) + &:not([selected], [multiselected])::before {
+      content: "";
+      position: absolute;
+      inset-inline-start: -1px;
+      top: 9px;
+      width: 2px;
+      height: 18px;
+      border-radius: 1px;
+      background: var(--vb-line);
+      z-index: 1;
+    }
+  }
+  .tab-background {
+    margin-block: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background: color-mix(in srgb, var(--vb-chrome) 55%, var(--vb-strip)) !important;
+    transition: background-color 0.15s;
+    .tabbrowser-tab:hover > .tab-stack > & {
+      background: color-mix(in srgb, var(--vb-chrome) 75%, var(--vb-strip)) !important;
+    }
+    &:is([selected], [multiselected]) {
+      background: var(--vb-chrome) !important;
+    }
+    /* Tabs selected together (Ctrl/Shift+click) carry an accent underline,
+     * so they read apart from the single active tab. */
+    &[multiselected] {
+      box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--vb-accent) 70%, transparent) !important;
+    }
+  }
+  .tab-content {
+    padding-inline: 12px 8px !important;
+    gap: 2px;
+    &[pinned] {
+      padding-inline: 12px !important;
+    }
+  }
+  .tab-label {
+    font-size: 13px !important;
+  }
+  /* Narrow tabs show just the favicon, as in the prototype. */
+  .tabbrowser-tab:not([pinned]) .tab-content {
+    container-type: inline-size;
+  }
+  @container (max-width: 44px) {
+    .tab-label-container {
+      display: none !important;
+    }
+    .tab-icon-stack {
+      margin-inline: auto !important;
+    }
+    /* Without a label, a page with no favicon (a blank tab) would leave an
+     * empty tab; show the generic page icon instead. */
+    .tabbrowser-tab:not([image], [busy], [pending]) .tab-icon-stack {
+      width: 16px;
+      height: 16px;
+      background: url("chrome://global/skin/icons/defaultFavicon.svg") center / 16px no-repeat;
+      -moz-context-properties: fill;
+      fill: currentColor;
+    }
+    /* The selected tab keeps its close button, which takes the space. */
+    #tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab[selected] .tab-icon-stack {
+      display: none !important;
+    }
+    .tab-close-button {
+      margin-inline: auto !important;
+    }
+  }
+  .tab-icon-image,
+  .tab-sharing-icon-overlay,
+  .tab-icon-overlay {
+    width: 16px;
+    height: 16px;
+  }
+  .tab-throbber {
+    color: var(--vb-accent) !important;
+  }
+  /* The close button appears on hover only. */
+  .tab-close-button {
+    width: 20px !important;
+    height: 20px !important;
+    padding: 5px !important;
+    border-radius: 4px !important;
+    opacity: 0;
+    color: var(--vb-fg-2) !important;
+    transition: opacity 0.12s, background-color 0.12s;
+    .tabbrowser-tab:hover &,
+    &:focus-visible {
+      opacity: 1;
+    }
+    &:hover {
+      background-color: var(--vb-field) !important;
+      color: var(--vb-fg) !important;
+    }
+  }
+  /* Narrow tabs: Firefox keeps the close button on the selected tab only. */
+  #tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab[selected] .tab-close-button {
+    opacity: 1;
+  }
+
+  #tabs-newtab-button,
+  #new-tab-button,
+  #alltabs-button {
+    --toolbarbutton-icon-fill: var(--vb-muted);
+    &:hover {
+      --toolbarbutton-icon-fill: var(--vb-fg);
+    }
+  }
+  #TabsToolbar .toolbarbutton-1 > :is(.toolbarbutton-icon, .toolbarbutton-badge-stack) {
+    background: none !important;
+  }
+
+  /* ---------- window controls ---------- */
+
+  @media (-moz-platform: windows) {
+    .titlebar-buttonbox .titlebar-button {
+      padding: 8px 17px !important;
+      color: var(--vb-fg-2) !important;
+      transition: background-color 0.12s, color 0.12s;
+      &:hover {
+        color: var(--vb-fg) !important;
+        background-color: color-mix(in srgb, var(--vb-fg) 8%, transparent) !important;
+      }
+      &.titlebar-close:hover {
+        color: #fff !important;
+        background-color: var(--vb-close-hover) !important;
+      }
+    }
+  }
+  @media (-moz-platform: linux) {
+    .titlebar-buttonbox .titlebar-button {
+      color: var(--vb-fg-2);
+    }
+  }
+
+  /* ---------- toolbar ---------- */
+
+  #nav-bar {
+    min-height: 54px !important;
+    background: var(--vb-chrome) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding-inline: 10px 8px !important;
+  }
+  #PersonalToolbar {
+    background: var(--vb-chrome) !important;
+    color: var(--vb-fg-2) !important;
+    border: 0 !important;
+  }
+  :is(#nav-bar, #PersonalToolbar, #TabsToolbar) .toolbarbutton-1 {
+    --toolbarbutton-inner-padding: 8px;
+    color: var(--vb-fg-2);
+  }
+  #nav-bar .toolbarbutton-1:not([disabled]):hover {
+    --toolbarbutton-icon-fill: var(--vb-fg-2);
+  }
+  /* Dimmed but still legible (about 2:1) when there is no history. */
+  #nav-bar .toolbarbutton-1[disabled] {
+    opacity: 0.55 !important;
+  }
+
+  /* Vimbra's own glyphs for the controls people use most. They are files,
+   * not data: URIs, because Firefox only applies context-fill (the theme
+   * colour) to icons loaded from chrome:// — a data: icon renders black. */
+  #back-button {
+    list-style-image: url("chrome://browser/content/vimbra/icons/back.svg") !important;
+  }
+  #forward-button {
+    list-style-image: url("chrome://browser/content/vimbra/icons/forward.svg") !important;
+  }
+  #PanelUI-menu-button {
+    list-style-image: url("chrome://browser/content/vimbra/icons/menu.svg") !important;
+    &[open] {
+      --toolbarbutton-icon-fill: var(--vb-fg-2);
+    }
+  }
+
+  /* Firefox View is not part of Vimbra. */
+  #firefox-view-button {
+    display: none !important;
+  }
+
+  /* The address bar fills the toolbar between the navigation buttons and the
+   * buttons on the right, instead of sitting centred between two springs. */
+  #nav-bar-customization-target > toolbarspring {
+    display: none !important;
+  }
+  #urlbar-container {
+    flex: 1 1 auto !important;
+    min-width: 280px !important;
+    max-width: none !important;
+    width: auto !important;
+    margin-inline: 12px 6px !important;
+    --urlbar-container-height: 54px !important;
+  }
+
+  /* ---------- address bar ---------- */
+
+  #urlbar {
+    --urlbar-height: 28px;
+    --urlbar-min-height: 28px;
+    --urlbar-toolbar-height: 54px;
+    --urlbar-border-radius: var(--vb-radius);
+    --urlbar-inner-border-radius: calc(var(--vb-radius) - 1px);
+    font-size: 13px !important;
+    color: var(--vb-fg) !important;
+  }
+  #urlbar-background,
+  .urlbar-background {
+    background: var(--vb-field) !important;
+    border: 0 !important;
+    border-radius: var(--vb-radius) !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transition: background-color 0.15s;
+  }
+  #urlbar:is([focused], :focus-within, [open], [breakout-extend]) :is(#urlbar-background, .urlbar-background) {
+    background: var(--vb-field-hi) !important;
+  }
+  /* Results open in a floating card. */
+  #urlbar:is([open], [breakout-extend]) :is(#urlbar-background, .urlbar-background) {
+    border-radius: 8px !important;
+    box-shadow: var(--vb-shadow) !important;
+  }
+  #urlbar-input,
+  .urlbar-input {
+    caret-color: var(--vb-accent);
+    &::placeholder {
+      color: var(--vb-muted) !important;
+      opacity: 1;
+    }
+  }
+  /* A URL at rest reads in mono, the domain bright and the rest muted
+   * (Firefox's URL formatting dims everything but the domain). */
+  #urlbar:not([focused], :focus-within) :is(#urlbar-input, .urlbar-input):not(:placeholder-shown) {
+    font-family: var(--vb-font-mono) !important;
+    font-size: 12.5px !important;
+    letter-spacing: -0.01em;
+  }
+  #urlbar .searchmode-switcher,
+  #identity-box > box,
+  #tracking-protection-icon-container {
+    --urlbar-box-background-color: transparent;
+    background-color: transparent !important;
+    color: var(--vb-fg-2) !important;
+    fill: var(--vb-fg-2) !important;
+  }
+  /* Page actions (bookmark star, reader view…) show when you reach for them. */
+  #urlbar:not(:hover, [focused], :focus-within) #page-action-buttons > :not([open], [starred]) {
+    opacity: 0;
+  }
+  #page-action-buttons > * {
+    transition: opacity 0.15s;
+  }
+
+  .urlbarView {
+    --urlbarView-highlight-background: color-mix(in srgb, var(--vb-fg) 10%, transparent);
+    --urlbarView-highlight-color: var(--vb-fg);
+    color: var(--vb-fg-2);
+  }
+  .urlbarView-row {
+    border-radius: var(--vb-radius) !important;
+  }
+  .urlbarView-title {
+    color: var(--vb-fg);
+  }
+  .urlbarView-url,
+  .urlbarView-action {
+    font-family: var(--vb-font-mono) !important;
+    font-size: 11.5px !important;
+    color: var(--vb-muted) !important;
+  }
+  .urlbarView-row[selected] :is(.urlbarView-url, .urlbarView-action) {
+    color: var(--vb-fg-2) !important;
+  }
+
+  /* ---------- menus and panels ---------- */
+
+  menupopup,
+  panel {
+    --panel-border-radius: 10px;
+    --panel-padding: 5px;
+    --panel-menuitem-padding: 7px 10px;
+    color: var(--vb-fg);
+  }
+  menupopup :is(menuitem, menu) {
+    border-radius: var(--vb-radius) !important;
+    &[_moz-menuactive]:not([disabled]) {
+      background-color: color-mix(in srgb, var(--vb-fg) 8%, transparent) !important;
+      color: var(--vb-fg) !important;
+    }
+    &[disabled] {
+      color: var(--vb-muted) !important;
+    }
+  }
+  menupopup menuseparator {
+    border-top-color: var(--vb-line) !important;
+  }
+  menupopup :is(.menu-accel, .menu-iconic-accel, .menu-accel-container) {
+    font-family: var(--vb-font-mono) !important;
+    font-size: 11px;
+    color: var(--vb-muted) !important;
+  }
+  .subviewbutton,
+  .toolbaritem-combined-buttons > .subviewbutton {
+    border-radius: var(--vb-radius) !important;
+    &:not([disabled]):hover,
+    &[open] {
+      background-color: color-mix(in srgb, var(--vb-fg) 8%, transparent) !important;
+    }
+  }
+  .subviewbutton :is(.toolbarbutton-text + .toolbarbutton-accel, .toolbarbutton-accel) {
+    font-family: var(--vb-font-mono) !important;
+    font-size: 11px;
+    color: var(--vb-muted) !important;
+  }
+  toolbarseparator,
+  .panel-subview-footer-button,
+  .panel-header {
+    border-color: var(--vb-line) !important;
+  }
+
+  /* ---------- find bar, status, notifications ---------- */
+
+  findbar {
+    background: var(--vb-chrome) !important;
+    border-top: 1px solid var(--vb-line) !important;
+    color: var(--vb-fg-2) !important;
+  }
+  .findbar-textbox {
+    background: var(--vb-field) !important;
+    color: var(--vb-fg) !important;
+    border: 0 !important;
+    border-radius: var(--vb-radius) !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  #statuspanel-label {
+    background: var(--vb-field-hi) !important;
+    color: var(--vb-fg-2) !important;
+    border: 0 !important;
+    border-radius: var(--vb-radius) !important;
+    font-family: var(--vb-font-mono) !important;
+    font-size: 11.5px !important;
+    padding: 4px 9px !important;
+  }
+
+  /* ---------- sidebar ---------- */
+
+  #sidebar-main,
+  #sidebar-box,
+  #sidebar-header,
+  sidebar-main {
+    background-color: var(--vb-chrome) !important;
+    color: var(--vb-fg) !important;
+    border-color: var(--vb-line) !important;
+  }
+}

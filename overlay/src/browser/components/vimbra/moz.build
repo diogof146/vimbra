@@ -1,13 +1,26 @@
 MOZ_SRC_FILES += [
+    "AboutVimbra.sys.mjs",
     "actors/VimbraChild.sys.mjs",
+    "actors/VimbraHomeChild.sys.mjs",
+    "actors/VimbraHomeParent.sys.mjs",
     "actors/VimbraParent.sys.mjs",
+    "actors/VimbraSettingsChild.sys.mjs",
+    "actors/VimbraSettingsParent.sys.mjs",
+    "VimbraBrand.sys.mjs",
     "VimbraCommands.sys.mjs",
     "VimbraHints.sys.mjs",
     "VimbraKeymap.sys.mjs",
+    "VimbraTheme.sys.mjs",
 ]
 
 EXTRA_COMPONENTS += [
     "vimbra.manifest",
 ]
+
+XPCOM_MANIFESTS += [
+    "components.conf",
+]
+
+JAR_MANIFESTS += ["jar.mn"]
 
 BROWSER_CHROME_MANIFESTS += ["tests/browser/browser.toml"]

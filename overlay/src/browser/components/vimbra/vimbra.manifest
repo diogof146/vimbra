@@ -1,1 +1,3 @@
 category browser-before-ui-startup moz-src:///browser/components/vimbra/VimbraKeymap.sys.mjs VimbraKeymap.load
+category browser-before-ui-startup moz-src:///browser/components/vimbra/VimbraTheme.sys.mjs VimbraTheme.init
+category browser-before-ui-startup moz-src:///browser/components/vimbra/VimbraBrand.sys.mjs VimbraBrand.init

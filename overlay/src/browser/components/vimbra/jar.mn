@@ -1,0 +1,39 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+browser.jar:
+    content/browser/vimbra/home.html (content/home.html)
+    content/browser/vimbra/vimbra-tokens.css (themes/vimbra-tokens.css)
+    content/browser/vimbra/vimbra-chrome.css (themes/vimbra-chrome.css)
+    content/browser/vimbra/vimbra-pages.css (themes/vimbra-pages.css)
+    content/browser/vimbra/fonts/Geist-latin.woff2 (themes/fonts/Geist-latin.woff2)
+    content/browser/vimbra/fonts/Geist-latin-ext.woff2 (themes/fonts/Geist-latin-ext.woff2)
+    content/browser/vimbra/fonts/GeistMono-latin.woff2 (themes/fonts/GeistMono-latin.woff2)
+    content/browser/vimbra/fonts/GeistMono-latin-ext.woff2 (themes/fonts/GeistMono-latin-ext.woff2)
+    content/browser/vimbra/icons/back.svg (themes/icons/back.svg)
+    content/browser/vimbra/icons/forward.svg (themes/icons/forward.svg)
+    content/browser/vimbra/icons/menu.svg (themes/icons/menu.svg)
+    content/browser/vimbra/icons/owl.svg (themes/icons/owl.svg)
+    content/browser/vimbra/icons/owl-concerned.svg (themes/icons/owl-concerned.svg)
+# Firefox logos and fox (Kit) illustrations used outside the branding package.
+% override chrome://browser/skin/sidebar/firefox.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://browser/skin/window-firefox.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://devtools/skin/images/aboutdebugging-firefox-logo.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://devtools/skin/images/aboutdebugging-firefox-release.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://global/skin/illustrations/kit-concerned.svg chrome://browser/content/vimbra/icons/owl-concerned.svg
+% override chrome://global/skin/illustrations/kit-happy.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://browser/skin/preferences/fox-ai.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://browser/skin/preferences/mozilla-logo.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://browser/skin/fxa/avatar-fox.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://browser/skin/fxa/avatar-fox-circle.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://browser/skin/sidebar/foxy.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://global/content/megalist/icons/cpm-fox-illustration.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://browser/content/controlcenter/assets/fox-concern.svg chrome://browser/content/vimbra/icons/owl-concerned.svg
+% override chrome://browser/content/asrouter/assets/smiling-fox-icon.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://browser/content/asrouter/assets/fox-with-box-on-cloud.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://browser/content/asrouter/assets/fox-with-checkmark.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://browser/content/asrouter/assets/fox-with-devices.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://browser/content/asrouter/assets/fox-with-locked-box.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://browser/content/asrouter/assets/fox-with-mobile.svg chrome://browser/content/vimbra/icons/owl.svg
+% override chrome://browser/content/asrouter/assets/fox-with-profiles.svg chrome://browser/content/vimbra/icons/owl.svg

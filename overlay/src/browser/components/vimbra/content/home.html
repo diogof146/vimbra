@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<!-- about:vimbra, the new tab and home page. It runs as an unprivileged page:
+     everything is inline, colours and fonts come from vimbra-tokens.css, and
+     searches go to the browser through the VimbraHome actor. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vimbra</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 256 256%22 width=%2232%22 height=%2232%22%3E%3Cdefs%3E%3CradialGradient id=%22iris%22 cx=%220.45%22 cy=%220.6%22 r=%220.7%22%3E%3Cstop offset=%220%22 stop-color=%22%23C9FFF6%22/%3E%3Cstop offset=%220.45%22 stop-color=%22%232EE6D6%22/%3E%3Cstop offset=%221%22 stop-color=%22%230891B2%22/%3E%3C/radialGradient%3E%3CclipPath id=%22lidL%22%3E%3Cpolygon points=%2258,99 128,115 128,170 58,170%22/%3E%3C/clipPath%3E%3CclipPath id=%22lidR%22%3E%3Cpolygon points=%22198,99 128,115 128,170 198,170%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cpolygon points=%2236,18 104,64 44,96%22    fill=%22%23FF4F8B%22/%3E%3Cpolygon points=%22220,18 212,96 152,64%22  fill=%22%23B5179E%22/%3E%3Cpolygon points=%22104,64 128,58 128,102%22 fill=%22%23F43F9E%22/%3E%3Cpolygon points=%22128,58 152,64 128,102%22 fill=%22%23C026D3%22/%3E%3Cpolygon points=%22104,64 128,102 44,96%22  fill=%22%23E1308F%22/%3E%3Cpolygon points=%22152,64 212,96 128,102%22 fill=%22%239D1FB8%22/%3E%3Cpolygon points=%2244,96 128,102 58,162%22  fill=%22%23A21CAF%22/%3E%3Cpolygon points=%22212,96 198,162 128,102%22 fill=%22%237A1FA2%22/%3E%3Cpolygon points=%2258,162 128,102 128,192%22 fill=%22%237C3AED%22/%3E%3Cpolygon points=%22128,102 198,162 128,192%22 fill=%22%235B21B6%22/%3E%3Cpolygon points=%2258,162 128,192 128,238%22 fill=%22%234C1D95%22/%3E%3Cpolygon points=%22198,162 128,238 128,192%22 fill=%22%232E1065%22/%3E%3Cg clip-path=%22url(%23lidL)%22%3E%3Ccircle cx=%2294%22 cy=%22124%22 r=%2227%22 fill=%22%2312062B%22/%3E%3Ccircle cx=%2294%22 cy=%22124%22 r=%2219%22 fill=%22url(%23iris)%22/%3E%3Ccircle cx=%2297%22 cy=%22129%22 r=%228.5%22 fill=%22%2312062B%22/%3E%3Ccircle cx=%2290%22 cy=%22121%22 r=%223.5%22 fill=%22%23FFFFFF%22/%3E%3C/g%3E%3Cg clip-path=%22url(%23lidR)%22%3E%3Ccircle cx=%22162%22 cy=%22124%22 r=%2227%22 fill=%22%2312062B%22/%3E%3Ccircle cx=%22162%22 cy=%22124%22 r=%2219%22 fill=%22url(%23iris)%22/%3E%3Ccircle cx=%22159%22 cy=%22129%22 r=%228.5%22 fill=%22%2312062B%22/%3E%3Ccircle cx=%22166%22 cy=%22121%22 r=%223.5%22 fill=%22%23FFFFFF%22/%3E%3C/g%3E%3Cpolygon points=%2256,94 128,110 128,118 60,104%22 fill=%22%23FFB547%22/%3E%3Cpolygon points=%22200,94 128,110 128,118 196,104%22 fill=%22%23F08A24%22/%3E%3Cpolygon points=%22128,142 141,158 128,186 115,158%22 fill=%22%23FFB547%22/%3E%3Cpolygon points=%22128,142 141,158 128,186%22 fill=%22%23F08A24%22/%3E%3C/svg%3E">
+<style>
+  :root {
+    height: 100%;
+    background-color: var(--vb-page, #0f0f0f);
+    /* Only themes with a backdrop (Cobalto) paint one, with a fine grain. */
+    background-image: var(--vb-backdrop, none);
+    background-attachment: fixed;
+    color: var(--vb-fg, #ecebef);
+    font: 13px/1.4 var(--vb-font, system-ui, sans-serif);
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: var(--vb-grain, none);
+    pointer-events: none;
+  }
+  body {
+    margin: 0;
+    min-height: 100%;
+    display: grid;
+    place-items: center;
+    padding: 24px 16px 9vh;
+    box-sizing: border-box;
+  }
+  .nt {
+    position: relative;
+    width: min(863px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 46px;
+  }
+  .owl {
+    width: 138px;
+    height: 138px;
+    cursor: pointer;
+    overflow: visible;
+    transition: transform 0.55s cubic-bezier(0.3, 1.7, 0.45, 1);
+  }
+  .owl.tilt {
+    transform: rotate(-8deg);
+  }
+  .owl.sleeping {
+    animation: breathe 4.2s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    50% { transform: translateY(2px) scale(0.985); }
+  }
+  .search {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 14px 0 23px;
+    box-sizing: border-box;
+    background: var(--vb-field, #252424);
+    border-radius: var(--vb-radius, 5px);
+    transition: background-color 0.2s;
+    cursor: text;
+  }
+  .search:focus-within {
+    background: var(--vb-field-hi, #2e2d2d);
+  }
+  .search input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    border: 0;
+    outline: 0;
+    background: none;
+    color: var(--vb-fg, #ecebef);
+    font: inherit;
+    caret-color: var(--vb-accent, #2ee6d6);
+  }
+  .search input::placeholder {
+    color: var(--vb-muted, #8c8a91);
+    opacity: 1;
+  }
+  @media (max-width: 640px) {
+    .owl { width: 112px; height: 112px; }
+    .nt { gap: 36px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .owl { transition: none; }
+    .owl.sleeping { animation: none; }
+  }
+</style>
+</head>
+<body>
+  <main class="nt">
+    <svg class="owl" id="owl" viewBox="0 0 256 256" role="img" aria-label="Vimbra">
+      <defs>
+        <radialGradient id="owl-iris" cx="0.45" cy="0.6" r="0.7">
+          <stop offset="0" style="stop-color: var(--vb-iris-hi, #c9fff6)"/>
+          <stop offset="0.45" style="stop-color: var(--vb-iris-mid, #2ee6d6)"/>
+          <stop offset="1" style="stop-color: var(--vb-iris-lo, #0891b2)"/>
+        </radialGradient>
+        <clipPath id="owl-lidL"><polygon id="lidL" points="58,99 128,115 128,170 58,170"/></clipPath>
+        <clipPath id="owl-lidR"><polygon id="lidR" points="198,99 128,115 128,170 198,170"/></clipPath>
+      </defs>
+      <polygon points="36,18 104,64 44,96" fill="#FF4F8B"/>
+      <polygon points="220,18 212,96 152,64" fill="#B5179E"/>
+      <polygon points="104,64 128,58 128,102" fill="#F43F9E"/>
+      <polygon points="128,58 152,64 128,102" fill="#C026D3"/>
+      <polygon points="104,64 128,102 44,96" fill="#E1308F"/>
+      <polygon points="152,64 212,96 128,102" fill="#9D1FB8"/>
+      <polygon points="44,96 128,102 58,162" fill="#A21CAF"/>
+      <polygon points="212,96 198,162 128,102" fill="#7A1FA2"/>
+      <polygon points="58,162 128,102 128,192" fill="#7C3AED"/>
+      <polygon points="128,102 198,162 128,192" fill="#5B21B6"/>
+      <polygon points="58,162 128,192 128,238" fill="#4C1D95"/>
+      <polygon points="198,162 128,238 128,192" fill="#2E1065"/>
+      <g clip-path="url(#owl-lidL)">
+        <circle cx="94" cy="124" r="27" fill="#12062B"/>
+        <circle cx="94" cy="124" r="19" fill="url(#owl-iris)"/>
+        <circle cx="97" cy="129" r="8.5" fill="#12062B"/>
+        <circle cx="90" cy="121" r="3.5" fill="#FFFFFF"/>
+      </g>
+      <g clip-path="url(#owl-lidR)">
+        <circle cx="162" cy="124" r="27" fill="#12062B"/>
+        <circle cx="162" cy="124" r="19" fill="url(#owl-iris)"/>
+        <circle cx="159" cy="129" r="8.5" fill="#12062B"/>
+        <circle cx="166" cy="121" r="3.5" fill="#FFFFFF"/>
+      </g>
+      <polygon id="browL" points="56,94 128,110 128,118 60,104" fill="#FFB547"/>
+      <polygon id="browR" points="200,94 128,110 128,118 196,104" fill="#F08A24"/>
+      <polygon points="128,142 141,158 128,186 115,158" fill="#FFB547"/>
+      <polygon points="128,142 141,158 128,186" fill="#F08A24"/>
+    </svg>
+    <label class="search" id="search">
+      <input id="q" type="text" autocomplete="off" spellcheck="false">
+    </label>
+  </main>
+<script>
+"use strict";
+(() => {
+  const pt = (navigator.language || "").toLowerCase().startsWith("pt");
+  const q = document.getElementById("q");
+  q.placeholder = pt ? "pesquisar" : "search";
+  q.setAttribute("aria-label", pt ? "Pesquisar ou escrever endereço" : "Search or enter address");
+  document.documentElement.lang = pt ? "pt" : "en";
+
+  q.addEventListener("keydown", event => {
+    if (event.key == "Enter" && q.value.trim()) {
+      event.preventDefault();
+      // Bubbles up to the window root, where the VimbraHome actor listens.
+      document.dispatchEvent(new CustomEvent("VimbraHomeGo", { detail: q.value, bubbles: true }));
+    } else if (event.key == "Escape") {
+      q.blur();
+    }
+  });
+
+  // The owl: blinks, squints while you type, dozes by day (Dia theme) and
+  // falls asleep after a while without input. Its eyes never follow the cursor.
+  const svg = document.getElementById("owl");
+  const lidL = document.getElementById("lidL");
+  const lidR = document.getElementById("lidR");
+  const browL = document.getElementById("browL");
+  const browR = document.getElementById("browR");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  const SHUT = 56;
+  const SLEEP_AFTER = 25000;
+  let lL = 0, lR = 0, lastFrame = 0, nextBlink = 0, blinkUntil = 0, winkUntil = 0, wakeUntil = 0;
+  let lastInput = performance.now();
+
+  const bump = () => {
+    const now = performance.now();
+    if (now - lastInput > SLEEP_AFTER) {
+      blinkUntil = now + 420;
+    }
+    lastInput = now;
+  };
+  for (const type of ["mousemove", "keydown", "pointerdown", "wheel"]) {
+    addEventListener(type, bump, { passive: true });
+  }
+  svg.addEventListener("mouseenter", () => { wakeUntil = performance.now() + 4000; });
+  svg.addEventListener("click", () => {
+    bump();
+    winkUntil = performance.now() + 260;
+    svg.classList.add("tilt");
+    setTimeout(() => svg.classList.remove("tilt"), 420);
+  });
+
+  const isDay = () => getComputedStyle(document.documentElement).colorScheme.includes("light");
+
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (document.hidden) {
+      return;
+    }
+    if (now - lastFrame > 250) {
+      nextBlink = now + 1800 + Math.random() * 3000;
+    }
+    lastFrame = now;
+    const day = isDay();
+    const focused = document.activeElement == q;
+    const asleep = !focused && now - lastInput > SLEEP_AFTER;
+    svg.classList.toggle("sleeping", asleep && !reduce.matches);
+
+    let base = 0;
+    if (day && now > wakeUntil) base = 17;
+    if (focused) base = 7;
+    if (asleep) base = SHUT;
+    if (!reduce.matches && now > nextBlink) {
+      blinkUntil = now + 130;
+      nextBlink = now + (day ? 4500 : 2600) + Math.random() * 4800;
+    }
+    let tL = base, tR = base;
+    if (now < blinkUntil) tL = tR = SHUT;
+    if (now < winkUntil) tR = SHUT;
+
+    const k = reduce.matches ? 1 : asleep ? 0.035 : 0.38;
+    lL += (tL - lL) * k;
+    lR += (tR - lR) * k;
+    lidL.setAttribute("transform", `translate(0 ${lL.toFixed(2)})`);
+    lidR.setAttribute("transform", `translate(0 ${lR.toFixed(2)})`);
+    browL.setAttribute("transform", `translate(0 ${(Math.min(lL, 12) * 0.32).toFixed(2)})`);
+    browR.setAttribute("transform", `translate(0 ${(Math.min(lR, 12) * 0.32).toFixed(2)})`);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
